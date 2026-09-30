@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus to Success</title>
+
+    <!-- Google Fonts: Outfit for a modern, premium feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Tailwind Config for Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.1)',
+                            200: 'rgba(255, 255, 255, 0.2)',
+                            300: 'rgba(255, 255, 255, 0.3)',
+                            border: 'rgba(255, 255, 255, 0.2)',
+                            text: 'rgba(255, 255, 255, 0.9)',
+                            textMuted: 'rgba(255, 255, 255, 0.6)',
+                        },
+                        accent: {
+                            DEFAULT: '#6366f1', // Indigo 500
+                            glow: 'rgba(99, 102, 241, 0.5)',
+                        }
+                    },
+                    backgroundImage: {
+                        'main-gradient': 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-main-gradient min-h-screen text-glass-text overflow-x-hidden selection:bg-accent selection:text-white">
+
+    <!-- Interactive Background Canvas -->
+    <canvas id="ambient-bg"></canvas>
+
+    <!-- Background Orbs -->
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob">
+        </div>
+        <div
+            class="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute bottom-[-20%] left-[20%] w-[40%] h-[40%] bg-pink-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob animation-delay-4000">
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8 max-w-7xl relative z-10">
+
+        <!-- Header -->
+        <!-- ... existing header ... -->
+
+        <header class="flex justify-between items-center mb-10 glass-panel p-6 rounded-2xl animate-fade-in-down">
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-graduation-cap text-xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight">Syllabus to Success</h1>
+                    <p class="text-glass-textMuted text-sm">Your AI-powered study companion</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button id="reset-btn"
+                    class="glass-button text-sm px-4 py-2 rounded-lg hover:bg-red-500/20 hover:text-red-300 transition-all duration-300"
+                    title="Reset Data">
+                    <i class="fa-solid fa-trash-arrow-up mr-2"></i> Reset
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Left Column: Syllabus & Checklist (Wait for content) -->
+            <div class="lg:col-span-8 space-y-8">
+
+                <!-- Unified Input Area -->
+                <div id="input-container" class="space-y-6 animate-fade-in-up">
+
+                    <!-- Dropzone -->
+                    <div id="dropzone"
+                        class="glass-panel border-2 border-dashed border-glass-border rounded-2xl p-8 text-center cursor-pointer hover:border-accent transition-all duration-300 group relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div class="relative z-10 pointer-events-none">
+                            <div
+                                class="w-16 h-16 mx-auto bg-glass-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-accent"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold mb-1">Drop Syllabus File (PDF/Text)</h3>
+                            <button id="demo-btn"
+                                class="text-xs text-glass-textMuted hover:text-white underline cursor-pointer pointer-events-auto">
+                                Or load demo data
+                            </button>
+                        </div>
+                        <input type="file" id="file-input"
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".txt,.pdf">
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="flex items-center gap-4">
+                        <div class="h-px bg-glass-border flex-1"></div>
+                        <span class="text-glass-textMuted text-sm font-medium">OR PASTE TEXT</span>
+                        <div class="h-px bg-glass-border flex-1"></div>
+                    </div>
+
+                    <!-- Manual Input (Always Visible) -->
+                    <div id="manual-input-section" class="glass-panel p-6 rounded-2xl">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold"><i
+                                    class="fa-solid fa-keyboard mr-2 text-accent"></i>Manual Entry</h3>
+                            <button id="parse-text-btn"
+                                class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-6 py-2 rounded-lg shadow-lg shadow-indigo-500/30 transition-all duration-300 transform hover:-translate-y-1">
+                                Generate Roadmap
+                            </button>
+                        </div>
+                        <textarea id="manual-text"
+                            class="w-full h-48 bg-white/5 border border-glass-border rounded-xl p-4 text-base focus:outline-none focus:border-accent focus:bg-white/10 resize-none placeholder-glass-textMuted transition-colors"
+                            placeholder="Paste your syllabus content here..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Syllabus Checklist (Hidden initially) -->
+                <div id="checklist-section" class="hidden space-y-6">
+                    <div class="flex justify-between items-end">
+                        <h2 class="text-2xl font-bold">Your Roadmap</h2>
+                        <div class="text-sm text-glass-textMuted flex items-center gap-2">
+                            <div class="w-32 bg-glass-200 rounded-full h-2 overflow-hidden">
+                                <div id="overall-progress-bar"
+                                    class="bg-gradient-to-r from-green-400 to-emerald-500 h-full w-0 transition-all duration-1000 ease-out">
+                                </div>
+                            </div>
+                            <span id="overall-progress-text">0%</span> Complete
+                        </div>
+                    </div>
+
+                    <div id="checklist-container" class="space-y-4">
+                        <!-- Dynamic Content Will Go Here -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Stats & Tools -->
+            <div class="lg:col-span-4 space-y-8 sticky top-6 self-start">
+
+                <!-- Timetable Card -->
+                <div class="glass-panel p-6 rounded-2xl animate-fade-in-right delay-100">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fa-regular fa-calendar-check mr-2 text-pink-500"></i> Adaptive Timetable
+                    </h3>
+
+                    <div class="mb-6">
+                        <label class="block text-xs font-medium text-glass-textMuted uppercase tracking-wider mb-2">Exam
+                            Date</label>
+                        <input type="date" id="exam-date"
+                            class="w-full bg-glass-100 border border-glass-border rounded-xl px-4 py-3 text-glass-text focus:outline-none focus:border-accent transition-colors color-scheme-dark">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="bg-glass-100 rounded-xl p-4 border border-glass-border flex flex-col justify-between">
+                            <p class="text-xs text-glass-textMuted mb-1">Daily Goal</p>
+                            <div class="flex items-baseline gap-1">
+                                <span id="daily-tasks-count" class="text-2xl font-bold text-accent">--</span>
+                                <span class="text-xs">tasks</span>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-glass-100 rounded-xl p-4 border border-glass-border flex flex-col justify-between">
+                            <p class="text-xs text-glass-textMuted mb-1">Remaining</p>
+                            <div class="flex items-baseline gap-1">
+                                <span id="remaining-tasks-count" class="text-2xl font-bold text-yellow-400">--</span>
+                                <span class="text-xs">tasks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="days-remaining-text" class="text-xs text-center mt-3 text-glass-textMuted">Set a date to
+                        calculate your pace</p>
+                </div>
+
+                <!-- Analytics Card -->
+                <div class="glass-panel p-6 rounded-2xl animate-fade-in-right delay-200">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fa-solid fa-chart-line mr-2 text-cyan-400"></i> Growth Analytics
+                    </h3>
+                    <div class="relative h-64 w-full">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Motivational Quote / Toast Anchor -->
+                <div id="toast-container" class="fixed bottom-8 right-8 z-50 flex flex-col gap-4 pointer-events-none">
+                    <!-- Toasts will appear here -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="sound-complete" src="https://assets.mixkit.co/active_storage/sfx/2578/2578-preview.mp3"
+        preload="auto"></audio>
+    <audio id="sound-success" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"
+        preload="auto"></audio>
+
+    <script src="script.js"></script>
+    <script src="background-anim.js"></script>
+</body>
+
+</html>

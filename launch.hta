@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tejus Syllabus - Launcher</title>
+<HTA:APPLICATION ID="TejusSyllabus" APPLICATIONNAME="Tejus Syllabus Launcher" BORDER="thin" CAPTION="yes" SHOWINTASKBAR="yes" SINGLEINSTANCE="yes" SYSMENU="yes" WINDOWSTATE="normal" SCROLL="no" />
+<style>
+body { font-family: Segoe UI, Arial, sans-serif; background: #0f172a; color: #fff; margin: 0; padding: 24px; }
+.card { max-width: 520px; margin: 0 auto; background: #1e1b4b; border: 1px solid #6366f1; border-radius: 12px; padding: 24px; }
+h1 { font-size: 22px; margin: 0 0 6px 0; }
+p { font-size: 13px; color: #c7d2fe; }
+button { display: block; width: 100%; margin: 8px 0; padding: 12px; font-size: 14px; font-weight: bold; color: #fff; background: #6366f1; border: none; border-radius: 8px; cursor: pointer; }
+button.ghost { background: transparent; border: 1px solid #6366f1; }
+button:hover { filter: brightness(1.15); }
+.small { font-size: 11px; color: #93a0c0; margin-top: 12px; }
+</style>
+<script language="VBScript">
+Function HtaDir()
+  Dim path
+  path = Mid(document.location.href, 9)
+  path = Replace(path, "/", "\")
+  path = Unescape(path)
+  HtaDir = Left(path, InStrRev(path, "\"))
+End Function
+
+Sub OpenMain()
+  Dim sh
+  Set sh = CreateObject("WScript.Shell")
+  sh.Run Chr(34) & HtaDir() & "index.html" & Chr(34), 1, False
+  Set sh = Nothing
+End Sub
+
+Sub OpenFolder()
+  Dim sh
+  Set sh = CreateObject("WScript.Shell")
+  sh.Run Chr(34) & "explorer.exe" & Chr(34) & " " & Chr(34) & HtaDir() & Chr(34), 1, False
+  Set sh = Nothing
+End Sub
+</script>
+</head>
+<body>
+<div class="card">
+<h1>Syllabus to Success</h1>
+<p>Your AI-powered study companion. Paste syllabus text or drop a PDF, generate a roadmap, track progress with timetable and analytics.</p>
+<button onclick="OpenMain">Open Main File (index.html)</button>
+<button class="ghost" onclick="OpenFolder">Open Project Folder</button>
+<p class="small">Needs internet for CDN libraries (Tailwind, Chart.js, pdf.js, confetti). Files: index.html, script.js, background-anim.js, style.css.</p>
+</div>
+</body>
+</html>
